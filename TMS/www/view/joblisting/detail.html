@@ -12,7 +12,7 @@
         <a class="button" ng-href="tel:08605925888865">
                     CALL
                 </a>
-      <!-- <button class="button" ng-click="showActionSheet()">
+        <!-- <button class="button" ng-click="showActionSheet()">
           CALL
         </button> -->
         <button class="button">
@@ -24,7 +24,7 @@
       </div>
       <div class="item item-input-inset">
         <label class="item-input-wrapper">
-          <input type="text" placeholder="Box No">
+          <input type="text" placeholder="Box No" ng-model="csbk2.BoxNo" ng-readonly="true">
         </label>
         <button class="button icon ion-android-refresh">
         </button>
@@ -40,24 +40,24 @@
           Collected
         </div>
       </div>
-      <div class="item item-text-wrap"  >
+      <div class="item item-text-wrap">
         <ion-item class="item" ng-repeat="Csbk2s in Csbk2">
           <div class="row" style="height:1px;">
-            <div class="col"  style="height:1px;">
+            <div class="col" style="height:1px;">
               <!-- JU MBO -->
               <p><span ng-bind="Csbk2s.BoxCode"></span></p>
             </div>
-            <div class="col"  style="height:1px;">
+            <div class="col" style="height:1px;">
               <!-- 11 -->
-              <p><span ng-bind="tobk2.Pcs"></span></p>
+              <p><span ng-bind="Csbk2s.Pcs"></span></p>
             </div>
             <div class="col" style="height:1px;">
               <!-- 22 -->
-              <p><span ng-bind="tobk2.CollectedPcs"></span></p>
+              <p><span ng-bind="Csbk2s.CollectedPcs"></span></p>
             </div>
           </div>
-           </ion-item>
-          <!-- <div class="row">
+        </ion-item>
+        <!-- <div class="row">
           <div class="col">
             XXL
           </div>
@@ -68,7 +68,7 @@
             1
           </div>
         </div> -->
-          <!-- <div class="row">
+        <!-- <div class="row">
           <div class="col">
             &nbsp;
           </div>
@@ -111,7 +111,7 @@
             Collected
           </div>
           <div class="col">
-            0
+            <p><span ng-bind="csbk2.Collected"></span></p>
           </div>
         </div>
       </div>

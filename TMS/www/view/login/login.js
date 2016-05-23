@@ -36,18 +36,21 @@ app.controller('LoginCtrl', ['ENV', '$scope', '$http', '$state', '$stateParams',
           alertPopup.then(function(res) {
             // console.log(alertPopupTitle);
           });
-        } else {
-          $state.go('index.main', {}, {
-            reload: true
-          });
-          var strUri = '/api/tms/login/check?ContactNo=' + $scope.logininfo.strDriverId;
+        }
+        else {
+          // $state.go('index.main', {}, {
+          //   reload: true
+          // });
+          var strUri = '/api/tms/login/check?DriverCode=' + $scope.logininfo.strDriverId;
             ApiService.GetParam(strUri, true).then(function success(result) {
             var results = result.data.results;
-            if (is.not.undefined(results)) {
+            console.log(results+'result');
+            if (is.not.empty(results)) {
               sessionStorage.clear();
               sessionStorage.setItem('strDriverId', $scope.logininfo.strDriverId);
-              sessionStorage.setItem('strDriverCode', results[0].DriverCode);
+              sessionStorage.setItem('strDriverCode', $scope.logininfo.strDriverId);
               sessionStorage.setItem('strDriverName', results[0].DriverName);
+              console.log( $scope.logininfo.strDriverId+'aa'+'bb'+results[0].DriverName);
               $state.go('index.main', {}, {
                 reload: true
               });

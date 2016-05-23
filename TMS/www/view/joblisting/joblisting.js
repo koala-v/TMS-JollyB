@@ -30,7 +30,7 @@ app.controller('JoblistingListCtrl', ['$scope', '$state', '$ionicLoading', '$ion
                 } else {
                   reuturnTime = Csbk1_acc.CollectionTimeStart + '-' + Csbk1_acc.CollectionTimeEnd;
                 }
-                var DLVReturntime='';
+                var DLVReturntime = '';
                 if (is.equal(Csbk1_acc.TimeFrom, '') && is.equal(Csbk1_acc.TimeFrom, '')) {
                   DLVReturntime = '';
                 } else {
@@ -248,7 +248,8 @@ app.controller('JoblistingDetailCtrl', ['ENV', '$scope', '$state', '$ionicAction
       AllBalance: 0,
       Deposit: 0,
       Discount: 0,
-      Collected: 0
+      Collected: 0,
+      BoxNo: 0
     };
     // $scope.CompletedFlagDetail = $stateParams.CompletedFlagDetail;
     // console.log($stateParams.BookingNo + 'aaaa' + $scope.CompletedFlagDetail);
@@ -271,7 +272,9 @@ app.controller('JoblistingDetailCtrl', ['ENV', '$scope', '$state', '$ionicAction
               $scope.csbk2.AllBalance = $scope.csbk2.AllBalance + (results[intI].Pcs * results[intI].UnitRate) - results[intI].DepositAmt - results[intI].DiscountAmt;
               $scope.csbk2.Deposit = results[intI].DepositAmt;
               $scope.csbk2.Discount = results[intI].DiscountAmt;
-             console.log($scope.csbk2.AllBalance + 'AllBalance');
+              $scope.csbk2.BoxNo = results[intI].ItemNo;
+              $scope.csbk2.Collected = $scope.csbk2.AllBalance;
+              console.log($scope.csbk2.AllBalance + 'AllBalance');
               dataResults = dataResults.concat(csbk2);
               $scope.Csbk2 = dataResults;
             }
@@ -356,24 +359,24 @@ app.controller('JoblistingConfirmCtrl', ['$scope', '$state', '$stateParams', 'Ap
     };
 
     // var getDownLoadImg = function() {
-      var strUri = '/api/tms/csbk1/attach?JobNo=' + $stateParams.JobNo;
-      console.log(strUri);
-      ApiService.GetParam(strUri, true).then(function success(result) {
-        if (result.data.results != null && result.data.results.length > 0) {
-          $scope.signature = 'data:image/png;base64,' + result.data.results;
-          console.log($scope.signature + 'SignatureCsbk1');
-        } else {
-          $scope.SignatureCsbk1 = null;
-          alertPopup = $ionicPopup.alert({
-            title: 'No Attachment Found',
-            okType: 'button-calm'
-          });
-          alertPopup.then(function(res) {
-            console.log('No Attachment Found');
+    var strUri = '/api/tms/csbk1/attach?BookingNo=' + $stateParams.BookingNo;
+    console.log(strUri);
+    ApiService.GetParam(strUri, true).then(function success(result) {
+      if (result.data.results != null && result.data.results.length > 0) {
+        $scope.signature = 'data:image/png;base64,' + result.data.results;
+        console.log($scope.signature + 'SignatureCsbk1');
+      } else {
+        $scope.SignatureCsbk1 = null;
+        alertPopup = $ionicPopup.alert({
+          title: 'No Attachment Found',
+          okType: 'button-calm'
+        });
+        alertPopup.then(function(res) {
+          console.log('No Attachment Found');
           //  $scope.returnSearch();
-          });
-        }
-      });
+        });
+      }
+    });
     // };
     $scope.returnList = function() {
       $state.go('jobListingList', {}, {});
@@ -398,7 +401,7 @@ app.controller('JoblistingConfirmCtrl', ['$scope', '$state', '$stateParams', 'Ap
         'Base64': $scope.signature,
         'FileName': 'signature.png'
       };
-      var strUri = '/api/tms/upload/img?JobNo=' + $stateParams.JobNo;
+      var strUri = '/api/tms/upload/img?BookingNo=' + $stateParams.BookingNo;
       ApiService.Post(strUri, jsonData, true).then(function success(result) {
         console.log(strUri + 'updatephoto');
       });

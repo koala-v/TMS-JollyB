@@ -15,11 +15,11 @@ using System.IO;
 
 namespace WebApi.ServiceModel.TMS
 {
-    [Route("/tms/upload/img", "Post")]                      //img?JobNo= & FileName= & Extension=
+    [Route("/tms/upload/img", "Post")]                      //img?BookingNo= & FileName= & Extension=
     [Route("/tms/upload/img", "Options")]			//img?FileName= & Extension=
     public class UploadImg: IReturn<CommonResponse>
     {
-        public string JobNo { get; set; }
+        public string BookingNo { get; set; }
         public string FileName { get; set; }
         public string Extension { get; set; }
         public string Base64 { get; set; }
@@ -32,18 +32,18 @@ namespace WebApi.ServiceModel.TMS
         {
             int i = -1;
             string filePath = "";
-            if (!string.IsNullOrEmpty(request.JobNo))
+            if (!string.IsNullOrEmpty(request.BookingNo))
             {
                 try
                 {
                     using (var db = DbConnectionFactory.OpenDbConnection())
                     {
-                        string strSQL = "Select Top 1 BackupPath From Saco1";
+                       string strSQL = "Select  DocumentPath From Saco1 where cityCode='SIN' ";
                         List<Saco1> saco1 = db.Select<Saco1>(strSQL);
                         if (saco1.Count > 0)
                         {
-                            filePath = saco1[0].BackupPath+"\\SysFreight\\" + "\\csbk1\\" + request.JobNo;        /*2016018 File path */          
-                          //  filePath = "E:\\"+"\\Sysfreight\\" + "\\csbk1\\" + request.JobNo;
+                            filePath = saco1[0].DocumentPath  + "\\csbk1\\" + request.BookingNo;        /*2016018 File path */          
+                          //  filePath = "E:\\"+"\\Sysfreight\\" + "\\csbk1\\" + request.BookingNo;
                         }
                     }
                     if (!Directory.Exists(filePath))
@@ -84,7 +84,7 @@ namespace WebApi.ServiceModel.TMS
                                             {
                                                 AttachmentFlag = "Y"
                                             },
-                                            p => p.JobNo == request.JobNo
+                                            p => p.BookingNo == request.BookingNo
                             );
                         }
                     }

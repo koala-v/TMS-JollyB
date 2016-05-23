@@ -14,11 +14,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace WebApi.ServiceModel.TMS
 {
     [Route("/tms/csbk1/doc", "Get")]                // doc?JobNo=
-    [Route("/tms/csbk1/attach", "Get")]	// attach?JobNo=
+    [Route("/tms/csbk1/attach", "Get")]	// attach?BookingNo=
     public  class DownLoadImg : IReturn<CommonResponse>
     {
+        public string BookingNo { get; set; }
         public string JobNo { get; set; }
-
     }
 
     public class DownLoadImg_Logic
@@ -97,20 +97,19 @@ namespace WebApi.ServiceModel.TMS
             {
                 using (var db = DbConnectionFactory.OpenDbConnection())
                 {
-                    string strSQL = "Select Top 1 BackupPath From Saco1";
+                    //string strSQL = "Select Top 1 BackupPath From Saco1";
+                    string strSQL = "Select  DocumentPath From Saco1 where cityCode='SIN' ";
                     List<Saco1> saco1 = db.Select<Saco1>(strSQL);
                     if (saco1.Count > 0)
                     {
-                        DocumentPath = saco1[0].BackupPath;
+                        DocumentPath = saco1[0].DocumentPath;
                     }
                 }
-                //strPath = DocumentPath + "\\csbk1\\" + request.JobNo;
+                //strPath = DocumentPath + "\\csbk1\\" + request.BookingNo;
                 //   GetAllDirList(strPath);
 
-
-
-               strPath = DocumentPath + "\\Sysfreight\\" + "\\csbk1\\" + request.JobNo+"\\"+ "signature.png";          /*20160518 download file path for signature.png*/
-             //   strPath = "E:\\" + "\\Sysfreight\\" + "\\csbk1\\" + request.JobNo + "\\" + "signature.png";
+                strPath = DocumentPath  + "\\csbk1\\" + request.BookingNo + "\\"+ "signature.png";          /*20160518 download file path for signature.png*/
+             //   strPath = "E:\\" + "\\Sysfreight\\" + "\\csbk1\\" + request.BookingNo + "\\" + "signature.png";
                 using (FileStream fsRead = new FileStream(strPath, FileMode.Open))
                 {
                     int fsLen = (int)fsRead.Length;                      /*20160518 To convert imgage ask Base64 */    
